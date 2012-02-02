@@ -1,0 +1,223 @@
+/*
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *  
+ *  Copyright 2012 Eric Aguiar <ultimate.evil@gmail.com>. All Rights Reserved.
+ */
+
+body {
+	font-family: "Helvetica Neue", Arial, Verdana, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #333;
+}
+
+a, a:visited, a:active, a:link, a:hover {
+	color: #369;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* POPUP PAGE */
+
+html.popup-page, html.popup-page body {
+	margin: 0;padding: 0;
+}
+
+html.popup-page {
+}
+
+html.popup-page body {
+	border-style:double;
+	border-width:thick;
+}
+
+html.popup-page div.panel {
+	background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow: 0px 0px 15px #746f68;
+	color: #636460;
+	position: relative;
+}
+
+html.popup-page div.panel h1 {
+	margin:0;
+	padding: 10px 20px 0px 20px;
+	border-bottom: solid 1px #d4d5cf;
+	font-size: 18px;
+	font-weight: bold;
+	height: 35px;
+}
+
+html.popup-page div.panel div.content {
+	padding: 0px 20px 15px 20px;
+}
+
+html.popup-page div.panel p.msg {
+	font-size: 14px;
+	line-height: 18px;
+	margin-bottom: 45px;
+	margin-top: 15px;
+}
+
+html.popup-page div.panel h2 {
+	font-size: 14px;
+	line-height: 18px;
+	margin-bottom: 5px;
+	margin-top: 15px;
+}
+
+html.popup-page div.panel div.section {
+	overflow: hidden;
+}
+
+html.popup-page div.panel div.buttons {
+	border-top: solid 1px #c2c3be;
+	overflow: hidden;
+}
+
+html.popup-page div.panel div.buttons div.link {
+	float: left;
+	background: transparent url(../images/button-spacer.png) no-repeat bottom right;
+	padding: 15px 20px;
+}
+
+html.popup-page div.panel div.buttons a {
+	color: #636460;
+}
+
+html.popup-page div.panel div.section.inline h2 {
+	float: left;	
+}
+
+html.popup-page div.panel div.section.inline div {
+	float: left;
+	margin-top: 15px;
+	margin-left: 20px;
+	line-height: 18px;
+}
+
+/* OPTIONS PAGE */
+
+html.options-page, html.options-page body {
+	margin:0;padding:0;
+	background: #b3ab9f;
+	font-size: 14px;
+}
+
+@-webkit-keyframes op-panel-fade {
+	0%   { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+html.options-page #installer-panel {
+	display: none;
+}
+
+html.options-page div.panel {
+	background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow: 0px 0px 15px #746f68;
+	opacity: 1;
+	color: #636460;
+	width: 460px;
+	margin: 20px auto 10px auto;
+	-webkit-animation-name: op-panel-fade;
+	-webkit-animation-duration: 500ms;
+	position: relative;
+}
+
+@-webkit-keyframes op-footer-fade {
+  0%   { opacity: 0; }
+  50%  { opacity:0; }
+  100% { opacity: 1; }
+}
+
+html.options-page #footer {
+	width: 440px;
+	padding: 0 0 0 20px;
+	margin: 20px auto;
+	opacity: 1;
+	-webkit-animation-name: op-footer-fade;
+	-webkit-animation-duration: 750ms;
+}
+
+html.options-page div.panel h1 {
+	margin:0;
+	padding: 10px 20px 0px 20px;
+	border-bottom: solid 1px #d4d5cf;
+	font-size: 18px;
+	font-weight: bold;
+	height: 35px;
+}
+
+html.options-page div.panel div.form {
+	padding: 15px 20px;
+}
+
+html.options-page div.panel div.form label {
+	color: #636460;
+}
+
+html.options-page div.panel div.form div.buttons {
+	margin: 20px 0 0 0;
+}
+
+html.options-page div.panel div.form fieldset {
+	margin: 20px 0;
+	padding: 0;
+	border: 0;
+}
+
+html.options-page #platform, html.options-page #repository {
+	width:  100%;
+}
+
+html.options-page #status {
+	position: absolute;
+	top: 13px;
+	right: 20px;
+	color: #363;
+	opacity: 0;
+}
+
+@-webkit-keyframes op-status-display {
+  0%   { opacity: 0; }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+html.options-page ul, html.options-page li {
+	margin:0;padding:0;list-style:none;
+}
+
+html.options-page div.panel div.info {
+	border-top: solid 1px #d4d5cf;
+	padding: 0 20px 15px 20px;
+}
+
+html.options-page div.panel div.info li {
+	line-height: 24px
+}
+
+html.options-page #footer {
+	font-size: 11px;
+	color: #d6d7d1;
+	line-height: 16px
+}
+
+input.error {
+	color: red;
+}

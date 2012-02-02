@@ -1,0 +1,23 @@
+{
+   "name": "Chromium Build Monitor",
+   "version": "1.0",
+   "description": "Monitors the latest Chromium snapshot builds",
+   "background_page": "background.html",
+   "browser_action": {
+      "default_icon": "images/icon.png",
+      "default_title": "Chromium Build Monitor",
+      "popup": "popup.html"
+   },
+   "icons": {
+      "128": "images/icon-128.png",
+      "16": "images/icon-16.png",
+      "256": "images/icon-256.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-48.png",
+      "512": "images/icon-512.png",
+      "64": "images/icon-64.png"
+   },
+   "homepage_url": "http://toxprox.tumblr.com/",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "http://commondatastorage.googleapis.com/" ]
+}
