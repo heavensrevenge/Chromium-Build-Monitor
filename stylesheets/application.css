@@ -39,6 +39,7 @@ html.popup-page {
 }
 
 html.popup-page body {
+	min-width: 500px;
 	border-style:double;
 	border-width:thick;
 }
