@@ -39,7 +39,7 @@ html.popup-page {
 }
 
 html.popup-page body {
-	min-width: 500px;
+	width: 420px;
 	border-style:double;
 	border-width:thick;
 }
@@ -56,13 +56,15 @@ html.popup-page div.panel h1 {
 	margin:0;
 	padding: 10px 20px 0px 20px;
 	border-bottom: solid 1px #d4d5cf;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: bold;
-	height: 35px;
+	height: 40px;
+	
 }
 
 html.popup-page div.panel div.content {
-	padding: 0px 20px 15px 20px;
+	padding: 0px 0px 20px 20px;
+	
 }
 
 html.popup-page div.panel p.msg {
