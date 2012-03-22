@@ -31,15 +31,20 @@ a:hover {
 
 /* POPUP PAGE */
 
+
+
 html.popup-page, html.popup-page body {
+	float: left;
 	margin: 0;padding: 0;
 }
 
 html.popup-page {
+	float: left;
 }
 
 html.popup-page body {
-	width: 420px;
+	float: left;
+	
 	border-style:double;
 	border-width:thick;
 }
@@ -59,11 +64,13 @@ html.popup-page div.panel h1 {
 	font-size: 16px;
 	font-weight: bold;
 	height: 18px;
+	width: 400px;
 	
 }
 
 html.popup-page div.panel div.content {
 	padding: 0px 20px 20px 20px;
+	
 	
 }
 
