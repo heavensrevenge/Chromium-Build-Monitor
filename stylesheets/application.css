@@ -15,7 +15,7 @@
  */
 
 body {
-	font-family: "Helvetica Neue", Arial, Verdana, Helvetica, sans-serif;
+	font-family: "Verdana", sans-serif, Tahoma, Georgia, Arial, Helvetica;
 	font-size: 14px;
 	color: #333;
 }
@@ -34,27 +34,20 @@ a:hover {
 
 
 html.popup-page, html.popup-page body {
-	float: left;
 	margin: 0;padding: 0;
 }
 
 html.popup-page {
-	float: left;
 }
 
 html.popup-page body {
-	float: left;
-	
-	border-style:double;
-	border-width:thick;
 }
 
 html.popup-page div.panel {
 	background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
-	-webkit-border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 15px #746f68;
 	color: #636460;
 	position: relative;
+	border: solid;
 }
 
 html.popup-page div.panel h1 {
@@ -64,14 +57,11 @@ html.popup-page div.panel h1 {
 	font-size: 16px;
 	font-weight: bold;
 	height: 18px;
-	width: 400px;
-	
+	width: 420px;
 }
 
 html.popup-page div.panel div.content {
 	padding: 0px 20px 20px 20px;
-	
-	
 }
 
 html.popup-page div.panel p.msg {
@@ -108,11 +98,9 @@ html.popup-page div.panel div.buttons a {
 }
 
 html.popup-page div.panel div.section.inline h2 {
-	float: left;	
 }
 
 html.popup-page div.panel div.section.inline div {
-	float: left;
 	margin-top: 15px;
 	margin-left: 20px;
 	line-height: 18px;
