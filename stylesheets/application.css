@@ -16,7 +16,6 @@
 
 body {
 	font-family: "Verdana", sans-serif, Tahoma, Georgia, Arial, Helvetica;
-	font-size: 14px;
 	color: #333;
 }
 
@@ -41,13 +40,17 @@ html.popup-page {
 }
 
 html.popup-page body {
+
 }
 
 html.popup-page div.panel {
+	float: left;
+	font-size: 14px;
 	background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
 	color: #636460;
-	position: relative;
 	border: solid;
+	width: 400px;
+	word-wrap: break-word;
 }
 
 html.popup-page div.panel h1 {
@@ -56,8 +59,7 @@ html.popup-page div.panel h1 {
 	border-bottom: solid 1px #d4d5cf;
 	font-size: 16px;
 	font-weight: bold;
-	height: 18px;
-	width: 420px;
+
 }
 
 html.popup-page div.panel div.content {
@@ -65,17 +67,10 @@ html.popup-page div.panel div.content {
 }
 
 html.popup-page div.panel p.msg {
-	font-size: 14px;
-	line-height: 18px;
-	margin-bottom: 45px;
-	margin-top: 15px;
 }
 
 html.popup-page div.panel h2 {
 	font-size: 14px;
-	line-height: 18px;
-	margin-bottom: 5px;
-	margin-top: 15px;
 }
 
 html.popup-page div.panel div.section {
@@ -85,12 +80,13 @@ html.popup-page div.panel div.section {
 html.popup-page div.panel div.buttons {
 	border-top: solid 1px #c2c3be;
 	overflow: hidden;
+	font-size: 15px;
 }
 
 html.popup-page div.panel div.buttons div.link {
 	float: left;
 	background: transparent url(../images/button-spacer.png) no-repeat bottom right;
-	padding: 15px 20px;
+	padding: 15px;
 }
 
 html.popup-page div.panel div.buttons a {
@@ -101,10 +97,9 @@ html.popup-page div.panel div.section.inline h2 {
 }
 
 html.popup-page div.panel div.section.inline div {
-	margin-top: 15px;
-	margin-left: 20px;
-	line-height: 18px;
+	padding-left: 20px;
 }
+
 
 /* OPTIONS PAGE */
 
