@@ -40,7 +40,6 @@ html.popup-page {
 }
 
 html.popup-page body {
-
 }
 
 html.popup-page div.panel {
@@ -50,13 +49,15 @@ html.popup-page div.panel {
 	color: #636460;
 	border: solid;
 	width: 400px;
+	width: auto;	
+	max-width: 500px;
 	word-wrap: break-word;
 }
 
 html.popup-page div.panel h1 {
 	margin:0;
 	padding: 20px;
-	border-bottom: solid 1px #d4d5cf;
+	border-bottom: solid 2px #d4d5cf;
 	font-size: 16px;
 	font-weight: bold;
 
@@ -78,7 +79,7 @@ html.popup-page div.panel div.section {
 }
 
 html.popup-page div.panel div.buttons {
-	border-top: solid 1px #c2c3be;
+	border-top: solid 2px #c2c3be;
 	overflow: hidden;
 	font-size: 15px;
 }
