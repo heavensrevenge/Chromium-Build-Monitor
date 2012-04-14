@@ -52,7 +52,7 @@ html.popup-page div.panel h1 {
 
 html.popup-page div.panel div.content {
 	padding: 1.2em;
-	min-width: 28em;
+    min-width: 30em;
 }
 
 html.popup-page div.panel div.section.inline div {
