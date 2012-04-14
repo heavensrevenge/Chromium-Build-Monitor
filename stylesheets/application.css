@@ -85,7 +85,7 @@ html.popup-page div.panel div.buttons div.link:first-child {
 	border-top-right-radius: 1.2em;
 	border-top:   solid 2px #AAA;
 	border-right: solid 2px #AAA;
-	padding: 1em;
+	padding: 0.8em;
 }
 
 html.popup-page div.panel div.buttons div.link:last-child {
@@ -93,7 +93,7 @@ html.popup-page div.panel div.buttons div.link:last-child {
 	border-top-left-radius: 1.2em;
 	border-top:  solid 2px #AAA;
 	border-left: solid 2px #AAA;
-	padding: 1em;
+	padding: 0.8em;
 }
 
 /* OPTIONS PAGE */
