@@ -58,6 +58,9 @@ html.popup-page div.panel div.content {
 html.popup-page div.panel div.section.inline div {
 	padding-left: 1.2em;
 }
+html.popup-page div.panel div.section.inline{
+	padding-bottom: 0.9em;
+}
 
 html.popup-page div.panel div.section div {
 }
@@ -68,7 +71,7 @@ html.popup-page div.panel p.msg {
 
 html.popup-page div.panel h2 {
 	font-size: 1em;
-	padding: 0.5em;
+	padding: 0 0.5em 0.5em 0.5em;
 	margin-top: 0;
 	margin-bottom: 0;
 }
