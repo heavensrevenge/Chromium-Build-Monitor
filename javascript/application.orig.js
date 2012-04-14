@@ -3759,7 +3759,7 @@ mbrio.t.Popup.revisionInfo = function(b, c) {
 };
 mbrio.t.Popup.changeLogInfo = function(b, c) {
     var d = c || new soy.StringBuilder;
-    d.append('\t<div class="section"><h2>Change Log</h2><div class="changeLog">', b.msg, "</div></div>");
+    d.append('\t<div class="section"><h2>Most Recent Changelog</h2><div class="changeLog">', b.msg, "</div></div>");
     if (!c)
         return d.toString()
 };
