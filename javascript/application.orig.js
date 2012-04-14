@@ -3153,6 +3153,7 @@ a.display = function() {
         var d = chrome.extension.getBackgroundPage();
         c = d.snapshot.changeLogMessage;
         if (c != null && c.length > 0)
+        	c = c.replace(/\. /g,". <br />");
             c = c.replace(/\.\n\n/g,".<br /><br />");
         var e = d.snapshot.changeLogRevision, f = d.snapshot.downloadLink;
         d = d.snapshot.platform;
