@@ -3049,7 +3049,7 @@ mbrio.Repositories.snapshot = {name: "snapshot",latestBaseUrl: "http://commondat
             b = "Linux_ChromiumOS";
         return this.latestBaseUrl + b + "/LAST_CHANGE"
     },getDownloadUrl: function(b, c) {
-    	if (b == "Arm")
+        if (b == "Arm")
             b = "Arm";
         else if (b == "Linux_x64")
             b = "Linux_x64";
@@ -3153,7 +3153,7 @@ a.display = function() {
         var d = chrome.extension.getBackgroundPage();
         c = d.snapshot.changeLogMessage;
         if (c != null && c.length > 0)
-            c = c.replace(/\n\n/g, "<br /><br />");
+            c = c.replace(/\.\n\n/g,".<br /><br />");
         var e = d.snapshot.changeLogRevision, f = d.snapshot.downloadLink;
         d = d.snapshot.platform;
         b.innerHTML = mbrio.t.Popup.loaded({href: f,revision: e,msg: c,platform: d,prevRevision: mbrio.Settings.latestDownloadedRevision})
