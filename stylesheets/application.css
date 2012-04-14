@@ -16,11 +16,10 @@
 
 body {
 	font-family: "Verdana", sans-serif, Tahoma, Georgia, Arial, Helvetica;
-	color: #333;
 }
 
-a, a:visited, a:active, a:link, a:hover {
-	color: #369;
+a, a:visited, a:active, a:link {
+	color: #646464;
 	text-decoration: none;
 }
 
@@ -30,84 +29,76 @@ a:hover {
 
 /* POPUP PAGE */
 
-
-
 html.popup-page, html.popup-page body {
-	margin: 0;padding: 0;
-}
-
-html.popup-page {
-}
-
-html.popup-page body {
+	margin: 0;
 }
 
 html.popup-page div.panel {
 	float: left;
-	font-size: 14px;
+	font-size: 0.88em;
 	background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
-	color: #636460;
+	color: #666;
 	border: solid;
-	width: 400px;
-	width: auto;	
-	max-width: 500px;
 	word-wrap: break-word;
 }
 
 html.popup-page div.panel h1 {
-	margin:0;
-	padding: 20px;
-	border-bottom: solid 2px #d4d5cf;
-	font-size: 16px;
-	font-weight: bold;
-
+	margin: 0;
+	padding: 1em;
+	border-bottom: solid 2px #CCC;
+	font-size: 1.2em;
 }
 
 html.popup-page div.panel div.content {
-	padding: 0px 20px 20px 20px;
-}
-
-html.popup-page div.panel p.msg {
-}
-
-html.popup-page div.panel h2 {
-	font-size: 14px;
-}
-
-html.popup-page div.panel div.section {
-	overflow: hidden;
-}
-
-html.popup-page div.panel div.buttons {
-	border-top: solid 2px #c2c3be;
-	overflow: hidden;
-	font-size: 15px;
-}
-
-html.popup-page div.panel div.buttons div.link {
-	float: left;
-	background: transparent url(../images/button-spacer.png) no-repeat bottom right;
-	padding: 15px;
-}
-
-html.popup-page div.panel div.buttons a {
-	color: #636460;
-}
-
-html.popup-page div.panel div.section.inline h2 {
+	padding: 1.2em;
+	min-width: 28em;
+	max-width: 36em;
 }
 
 html.popup-page div.panel div.section.inline div {
-	padding-left: 20px;
+	padding-left: 1.2em;
 }
 
+html.popup-page div.panel div.section div {
+}
+
+html.popup-page div.panel p.msg {
+	padding-left: 1.2em;
+}
+
+html.popup-page div.panel h2 {
+	font-size: 1em;
+	padding: 0.5em;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+html.popup-page div.panel div.buttons {
+	font-size: 1.1em;
+}
+
+html.popup-page div.panel div.buttons div.link:first-child {
+	float:left;
+	border-top-right-radius: 1.2em;
+	border-top:   solid 2px #AAA;
+	border-right: solid 2px #AAA;
+	padding: 1em;
+}
+
+html.popup-page div.panel div.buttons div.link:last-child {
+	float:right;
+	border-top-left-radius: 1.2em;
+	border-top:  solid 2px #AAA;
+	border-left: solid 2px #AAA;
+	padding: 1em;
+}
 
 /* OPTIONS PAGE */
 
 html.options-page, html.options-page body {
 	margin:0;padding:0;
 	background: #b3ab9f;
-	font-size: 14px;
+	font-size: 0.88em;
 }
 
 @-webkit-keyframes op-panel-fade {
