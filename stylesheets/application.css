@@ -90,7 +90,7 @@ html.popup-page div.panel div.buttons div.link:first-child {
 	padding: 0.8em;
 	background-color:#E4EB94;
 	width: 6em;
-	text-align: center
+	text-align: center;
 }
 
 html.popup-page div.panel div.buttons div.link:last-child {
@@ -101,7 +101,7 @@ html.popup-page div.panel div.buttons div.link:last-child {
 	padding: 0.8em;
 	background-color:#E4EB94;
 	width: 6em;
-	text-align: center
+	text-align: center;
 }
 
 /* OPTIONS PAGE */
@@ -205,13 +205,13 @@ html.options-page div.panel div.info {
 }
 
 html.options-page div.panel div.info li {
-	line-height: 24px
+	line-height: 24px;
 }
 
 html.options-page #footer {
 	font-size: 11px;
 	color: #d6d7d1;
-	line-height: 16px
+	line-height: 16px;
 }
 
 input.error {
