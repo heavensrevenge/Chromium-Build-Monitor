@@ -19,7 +19,8 @@ body {
 }
 
 a, a:visited, a:active, a:link {
-	color: #646464;
+	color: #555;
+	font-weight:bold;
 	text-decoration: none;
 }
 
@@ -52,7 +53,6 @@ html.popup-page div.panel h1 {
 html.popup-page div.panel div.content {
 	padding: 1.2em;
 	min-width: 28em;
-	max-width: 36em;
 }
 
 html.popup-page div.panel div.section.inline div {
@@ -63,6 +63,8 @@ html.popup-page div.panel div.section.inline{
 }
 
 html.popup-page div.panel div.section div {
+    padding-left: 1.2em;
+    padding-right: 1.2em;
 }
 
 html.popup-page div.panel p.msg {
@@ -82,18 +84,24 @@ html.popup-page div.panel div.buttons {
 
 html.popup-page div.panel div.buttons div.link:first-child {
 	float:left;
-	border-top-right-radius: 1.2em;
+	border-top-right-radius: 6em 10em;
 	border-top:   solid 2px #AAA;
 	border-right: solid 2px #AAA;
 	padding: 0.8em;
+	background-color:#E4EB94;
+	width: 6em;
+	text-align: center
 }
 
 html.popup-page div.panel div.buttons div.link:last-child {
 	float:right;
-	border-top-left-radius: 1.2em;
+	border-top-left-radius: 6em 10em;
 	border-top:  solid 2px #AAA;
 	border-left: solid 2px #AAA;
 	padding: 0.8em;
+	background-color:#E4EB94;
+	width: 6em;
+	text-align: center
 }
 
 /* OPTIONS PAGE */
