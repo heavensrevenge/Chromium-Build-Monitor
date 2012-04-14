@@ -135,9 +135,9 @@ html.options-page div.panel {
 }
 
 @-webkit-keyframes op-footer-fade {
-  0%   { opacity: 0; }
-  50%  { opacity:0; }
-  100% { opacity: 1; }
+	0%   { opacity: 0; }
+	50%  { opacity:0; }
+	100% { opacity: 1; }
 }
 
 html.options-page #footer {
@@ -189,10 +189,10 @@ html.options-page #status {
 }
 
 @-webkit-keyframes op-status-display {
-  0%   { opacity: 0; }
-  25%  { opacity: 1; }
-  75%  { opacity: 1; }
-  100% { opacity: 0; }
+	0%   { opacity: 0; }
+	25%  { opacity: 1; }
+	75%  { opacity: 1; }
+	100% { opacity: 0; }
 }
 
 html.options-page ul, html.options-page li {
