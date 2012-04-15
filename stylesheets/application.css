@@ -19,7 +19,7 @@ body {
 }
 
 a, a:visited, a:active, a:link {
-	color: #555;
+	color: black;
 	font-weight:bold;
 	text-decoration: none;
 }
@@ -80,28 +80,34 @@ html.popup-page div.panel h2 {
 
 html.popup-page div.panel div.buttons {
 	font-size: 1.1em;
+	
 }
 
 html.popup-page div.panel div.buttons div.link:first-child {
-	float:left;
 	border-top-right-radius: 6em 10em;
-	border-top:   solid 2px #AAA;
-	border-right: solid 2px #AAA;
-	padding: 0.8em;
-	background-color:#E4EB94;
+	border-top: solid 1px #444;
+	border-right: solid 1px #444;
+	padding: 0.6em;
+	background-color: #69DB53;
 	width: 6em;
 	text-align: center;
+	position: relative;
+	float: left;
+	left: 50%;
 }
 
 html.popup-page div.panel div.buttons div.link:last-child {
-	float:right;
 	border-top-left-radius: 6em 10em;
-	border-top:  solid 2px #AAA;
-	border-left: solid 2px #AAA;
-	padding: 0.8em;
-	background-color:#E4EB94;
+	border-top: solid 1px #444;
+	border-left: solid 1px #444;
+	padding: 0.6em;
+	background-color: #34A5FF;
+	border-right: solid 1px #444;
 	width: 6em;
 	text-align: center;
+	position: relative;
+	float: right;
+	right: 50%;
 }
 
 /* OPTIONS PAGE */
