@@ -51,6 +51,7 @@ html.popup-page div.panel h1 {
 html.popup-page div.panel div.content {
   padding: 1.2em;
   min-width: 28em;
+  max-width: 46em;
 }
 
 html.popup-page div.panel div.section.inline div {
@@ -91,12 +92,12 @@ html.popup-page div.panel div.buttons div.link:first-child {
   border-left: solid 0.2em #444;
   border-right: solid 0.1em #444;
   padding: 0.6em;
-  background-color: #6EDF00;
+  background-color: #5FD524;
   width: 6em;
   text-align: center;
   position: relative;
-  float: left;
-  left: 24%;
+  float: right;
+  left: -50%;
 }
 
 html.popup-page div.panel div.buttons div.link:last-child {
@@ -109,8 +110,8 @@ html.popup-page div.panel div.buttons div.link:last-child {
   width: 6em;
   text-align: center;
   position: relative;
-  float: right;
-  right: 25%;
+  float: left;
+  right: -50%;
 }
 
 /* OPTIONS PAGE */
@@ -139,7 +140,7 @@ html.options-page div.panel {
   width: 36em;
   margin: 8em auto 8em auto;
   -webkit-animation-name: op-panel-fade;
-  -webkit-animation-duration: 1000ms;
+  -webkit-animation-duration: 800ms;
   position: relative;
 }
 
@@ -154,7 +155,7 @@ html.options-page #footer {
   margin: auto;
   opacity: 1;
   -webkit-animation-name: op-footer-fade;
-  -webkit-animation-duration: 1000ms;
+  -webkit-animation-duration: 800ms;
 }
 
 html.options-page div.panel h1 {
