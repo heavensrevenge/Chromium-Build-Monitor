@@ -1,6 +1,6 @@
 {
   "name": "Chromium Build Monitor",
-  "version": "1.3",
+  "version": "1.5",
   "manifest_version": 2,
   "description": "Monitors the latest Chromium snapshot builds",
   "background": {
@@ -22,6 +22,5 @@
   },
   "homepage_url": "https://github.com/heavensrevenge/Chromium-Build-Monitor",
   "options_page": "options.html",
-  "permissions": [ "tabs", "http://commondatastorage.googleapis.com/" ],
-  "content_security_policy": "script-src 'self' chrome-extension://; object-src 'self'"
+  "permissions": [ "tabs", "http://commondatastorage.googleapis.com/" ]
 }
