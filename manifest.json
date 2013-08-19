@@ -1,6 +1,7 @@
 {
   "name": "Chromium Build Monitor",
-  "version": "1.2",
+  "version": "1.3",
+  "manifest_version": 2,
   "description": "Monitors the latest Chromium snapshot builds",
   "background": {
     "page": "background.html"
@@ -19,7 +20,8 @@
     "512": "images/icon-512.png",
     "64": "images/icon-64.png"
   },
-  "homepage_url": "http://toxprox.tumblr.com/",
+  "homepage_url": "https://github.com/heavensrevenge/Chromium-Build-Monitor",
   "options_page": "options.html",
-  "permissions": [ "tabs", "http://commondatastorage.googleapis.com/" ]
+  "permissions": [ "tabs", "http://commondatastorage.googleapis.com/" ],
+  "content_security_policy": "script-src 'self' chrome-extension://; object-src 'self'"
 }
