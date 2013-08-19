@@ -1401,7 +1401,7 @@ mbrio.t = {};
 mbrio.t.Options = {};
 mbrio.t.Options.page = function(b, c) {
   b = c || new soy.StringBuilder;
-  b.append('\t<div class="panel"><h1>Options</h1><div class="form"><div id="platform-panel"><label>Select the platform you would like to monitor:</label><div id="status"></div><fieldset><select id="platform" onchange="optionsPage.platformUpdated()"><option value="Arm">ARM</option><option value="Linux">Linux</option><option value="Linux_x64">Linux 64</option><option value="Linux_ChromeOS">Linux Chrome OS</option><option value="Mac" selected>OS X</option><option value="Win">Windows</option></select></fieldset></div><div id="installer-panel"><label>Would you like to download the installer or zip:</label><fieldset><div><input id="installer-enabled" name="installer" type="radio"> <label for="installer-enabled">Installer</label></div><div><input id="installer-disabled" name="installer" type="radio"> <label for="installer-disabled">Zip</label></div></fieldset></div><div id="repository-panel"><label>Select the repository you would like to monitor:</label><fieldset><select id="repository"><option value="continuous" selected>Continuous (Passed Tests)</option><option value="snapshot">All Snapshots (May Not Have Passed All Tests)</option></select></fieldset></div><div id="check-continuously-panel"><label>Would you like to check for updates at regular intervals:</label><fieldset><div><input id="check-continuously" type="checkbox"> <label for="check-continuously">Check Every</label> <input id="check-interval" class="validate-as-number" type="text" size="4" /> Minutes</div></fieldset></div><div class="buttons"><a href="#" onclick="optionsPage.saveOptions()">Save</a></div></div></div><div id="footer"><div id="copyright">Brought to you by: HeavensRevenge &lt;ultimate.evilATgmail.com&gt;</div></div>');
+  b.append('\t<div class="panel"><h1>Options</h1><div class="form"><div id="platform-panel"><label>Select the platform you would like to monitor:</label><div id="status"></div><fieldset><select id="platform"><option value="Arm">ARM</option><option value="Linux">Linux</option><option value="Linux_x64">Linux 64</option><option value="Linux_ChromeOS">Linux Chrome OS</option><option value="Mac" selected>OS X</option><option value="Win">Windows</option></select></fieldset></div><div id="installer-panel"><label>Would you like to download the installer or zip:</label><fieldset><div><input id="installer-enabled" name="installer" type="radio"> <label for="installer-enabled">Installer</label></div><div><input id="installer-disabled" name="installer" type="radio"> <label for="installer-disabled">Zip</label></div></fieldset></div><div id="repository-panel"><label>Select the repository you would like to monitor:</label><fieldset><select id="repository"><option value="continuous" selected>Continuous (Passed Tests)</option><option value="snapshot">All Snapshots (May Not Have Passed All Tests)</option></select></fieldset></div><div id="check-continuously-panel"><label>Would you like to check for updates at regular intervals:</label><fieldset><div><input id="check-continuously" type="checkbox"> <label for="check-continuously">Check Every</label> <input id="check-interval" class="validate-as-number" type="text" size="4" /> Minutes</div></fieldset></div><div class="buttons"><a id="saveButton" href="#">Save</a></div></div></div><div id="footer"><div id="copyright">Brought to you by: HeavensRevenge &lt;ultimate.evil gmail.com&gt;</div></div>');
   if(!c) {
     return b.toString()
   }
@@ -1472,14 +1472,14 @@ mbrio.t.Popup.changeLogInfo = function(b, c) {
 };
 mbrio.t.Popup.downloadButton = function(b, c) {
   var d = c || new soy.StringBuilder;
-  d.append('\t<div class="link"><a href="', soy.$$escapeHtml(b.href), '" onclick="snapshotPopup.recordDownload(\'', soy.$$escapeHtml(b.revision), '\')" target="_blank">Download</a></div>');
+  d.append('\t<div class="link"><a href="', soy.$$escapeHtml(b.href), '" id="download" target="_blank">Download</a></div>');
   if(!c) {
     return d.toString()
   }
 };
 mbrio.t.Popup.refreshButton = function(b, c) {
   b = c || new soy.StringBuilder;
-  b.append('\t<div class="link"><a href="javascript:void(0)" onclick="snapshotPopup.refresh()" target="_blank">Refresh</a></div>');
+  b.append('\t<div class="link"><a href="javascript:void(0)" id="refresh" target="_blank">Refresh</a></div>');
   if(!c) {
     return b.toString()
   }
