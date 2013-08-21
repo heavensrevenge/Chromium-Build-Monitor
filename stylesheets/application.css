@@ -1,4 +1,4 @@
-<!--
+/*
   - Copyright (c) 2013, Eric Aguiar <ultimate.evil@gmail.com>
   - All rights reserved.
   -
@@ -10,7 +10,7 @@
   - 2. Redistributions in binary form must reproduce the above copyright notice,
   -    this list of conditions and the following disclaimer in the documentation
   -    and/or other materials provided with the distribution.
--->
+*/
 
 body {
   font-family: "Verdana", sans-serif, Tahoma, Georgia, Arial, Helvetica;
@@ -123,7 +123,7 @@ html.options-page, html.options-page body {
   font-size: 0.88em;
 }
 
-@-webkit-keyframes op-panel-fade {
+@keyframes op-panel-fade {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
@@ -134,18 +134,18 @@ html.options-page #installer-panel {
 
 html.options-page div.panel {
   background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
-  -webkit-border-radius: 1.2em;
-  -webkit-box-shadow: 0 0 2em #746F68;
+  border-radius: 1.2em;
+  box-shadow: 0 0 2em #746F68;
   opacity: 1;
   color: #636460;
   width: 36em;
   margin: 8em auto 8em auto;
-  -webkit-animation-name: op-panel-fade;
-  -webkit-animation-duration: 800ms;
+  animation-name: op-panel-fade;
+  animation-duration: 800ms;
   position: relative;
 }
 
-@-webkit-keyframes op-footer-fade {
+@keyframes op-footer-fade {
   0%   { opacity: 0; }
   50%  { opacity: 0; }
   100% { opacity: 1; }
@@ -155,8 +155,8 @@ html.options-page #footer {
   width: 38em;
   margin: auto;
   opacity: 1;
-  -webkit-animation-name: op-footer-fade;
-  -webkit-animation-duration: 800ms;
+  animation-name: op-footer-fade;
+  animation-duration: 800ms;
 }
 
 html.options-page div.panel h1 {
@@ -198,7 +198,7 @@ html.options-page #status {
   opacity: 0;
 }
 
-@-webkit-keyframes op-status-display {
+@keyframes op-status-display {
   0%   { opacity: 0; }
   25%  { opacity: 1; }
   75%  { opacity: 1; }
