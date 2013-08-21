@@ -1,6 +1,5 @@
-
-var snapshot = null;
-
-goog.events.listen(window, 'load', function() {
-	snapshot = new mbrio.ChromiumSnapshot();
-});
+(function(){
+	goog.events.listen(window, 'load', function() {
+		snapshot = new mbrio.ChromiumSnapshot();
+	});
+})();
