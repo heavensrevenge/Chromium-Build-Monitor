@@ -626,64 +626,33 @@ mbrio.RevisionModel = function() {
 mbrio.Repositories = {};
 var FILE_NAMES_ = [];
 FILE_NAMES_.Android = "chrome-android.zip";
+FILE_NAMES_.Linux = "chrome-linux.zip";
 FILE_NAMES_.Linux_x64 = "chrome-linux.zip";
-FILE_NAMES_.Linux_Touch = "chrome-linux.zip";
-FILE_NAMES_.Linux_ChromeOS = "chrome-linux.zip";
-FILE_NAMES_.linux = "chrome-linux.zip";
-FILE_NAMES_.arm = "chrome-linux.zip";
-FILE_NAMES_.mac = "chrome-mac.zip";
+FILE_NAMES_.Linux_ChromiumOS = "chrome-linux.zip";
+FILE_NAMES_.Mac = "chrome-mac.zip";
 FILE_NAMES_.Win = "chrome-win32.zip";
+FILE_NAMES_.Win_x64 = "chrome-win32.zip";
 FILE_NAMES_["Win-installer"] = "mini_installer.exe";
 mbrio.Repositories.continuous = {name:"continuous", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", getLatestUrl:function(b) {
-  if(b == "Arm") {
-    b = "Linux_Touch"
-  }else {
-    if(b == "Linux_ChromeOS") {
-      b = "Linux_Touch"
-    }
-  }
   return this.latestBaseUrl + b + "/LAST_CHANGE"
 }, getDownloadUrl:function(b, c) {
-  if(b == "Arm") {
-    b = "Linux_Touch"
-  }else {
-    if(b == "Linux_ChromeOS") {
-      b = "Linux_Touch"
-    }
-  }
   var d = FILE_NAMES_[b];
   if(b == "Win" && mbrio.Settings.useInstaller == "true") {
     d = FILE_NAMES_["Win-installer"]
   }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/" + d
 }, getChangeLogUrl:function(b, c) {
-  if(b == "Arm") {
-    b = "Linux_Touch"
-  }else {
-    if(b == "Linux_ChromeOS") {
-      b = "Linux_Touch"
-    }
-  }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/changelog.xml"
 }};
 mbrio.Repositories.snapshot = {name:"snapshot", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", getLatestUrl:function(b) {
-  if(b == "Linux_ChromeOS") {
-    b = "Arm"
-  }
   return this.latestBaseUrl + b + "/LAST_CHANGE"
 }, getDownloadUrl:function(b, c) {
   var d = FILE_NAMES_[b];
-  if(b == "Linux_ChromeOS") {
-    b = "Arm"
-  }
   if(b == "Win" && mbrio.Settings.useInstaller == "true") {
     d = FILE_NAMES_["Win-installer"]
   }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/" + d
 }, getChangeLogUrl:function(b, c) {
-  if(b == "Linux_ChromeOS") {
-    b = "Arm"
-  }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/changelog.xml"
 }};
 mbrio.SettingsManager = function() {
@@ -738,20 +707,24 @@ mbrio.SettingsManager.prototype.__defineGetter__("canCheckContinuously", functio
 });
 mbrio.Settings = new mbrio.SettingsManager;
 mbrio.SnapshotPopup = function() {
-  this.skipLoading = !1;
+  this.skipLoading = false;
   this.init()
 };
 a = mbrio.SnapshotPopup.prototype;
 a.init = function() {
-  function b() {
-    c.skipLoading && e.status == mbrio.ChromiumSnapshotStatus.loading ? c.skipLoading = !1 : c.display()
+  var b = this, c = chrome.extension.getBackgroundPage().snapshot;
+  function d() {
+    if(b.skipLoading && c.status == mbrio.ChromiumSnapshotStatus.loading) {
+      b.skipLoading = false
+    }else {
+      b.display()
+    }
   }
-  var c = this, e = chrome.extension.getBackgroundPage().snapshot;
-  e.addEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, b);
+  c.addEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, d);
   goog.events.listen(window, "unload", function() {
-    e.removeEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, b)
+    c.removeEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, d)
   });
-  c.retrieveChangeLog()
+  b.retrieveChangeLog()
 };
 a.retrieveChangeLog = function() {
   this.display()
@@ -760,20 +733,41 @@ a.display = function() {
   goog.dom.removeChildren(document.body);
   var b = goog.dom.$dom("div"), c = chrome.extension.getBackgroundPage().snapshot.status;
   if(c == mbrio.ChromiumSnapshotStatus.loaded) {
-    var e = chrome.extension.getBackgroundPage(), c = e.snapshot.changeLogMessage;
-    null != c && 0 < c.length && (c = c.replace(/\. /g, ". <br />"));
-    var c = c.replace(/\.\n\n/g, ".<br /><br />"), f = e.snapshot.changeLogRevision, g = e.snapshot.downloadLink, e = e.snapshot.platform;
-    b.innerHTML = mbrio.t.Popup.loaded({href:g, revision:f, msg:c, platform:e, prevRevision:mbrio.Settings.latestDownloadedRevision})
+    var d = chrome.extension.getBackgroundPage();
+    c = d.snapshot.changeLogMessage;
+    if(c != null && c.length > 0) {
+      c = c.replace(/\. /g, ". <br />")
+    }
+    c = c.replace(/\.\n\n/g, ".<br /><br />");
+    var e = d.snapshot.changeLogRevision, f = d.snapshot.downloadLink;
+    d = d.snapshot.platform;
+    b.innerHTML = mbrio.t.Popup.loaded({href:f, revision:e, msg:c, platform:d, prevRevision:mbrio.Settings.latestDownloadedRevision})
   }else {
-    c == mbrio.ChromiumSnapshotStatus.loading ? b.innerHTML = mbrio.t.Popup.loading() : c == mbrio.ChromiumSnapshotStatus.error ? b.innerHTML = mbrio.t.Popup.error() : c == mbrio.ChromiumSnapshotStatus.none && (b.innerHTML = mbrio.t.Popup.none())
+    if(c == mbrio.ChromiumSnapshotStatus.loading) {
+      b.innerHTML = mbrio.t.Popup.loading()
+    }else {
+      if(c == mbrio.ChromiumSnapshotStatus.error) {
+        b.innerHTML = mbrio.t.Popup.error()
+      }else {
+        if(c == mbrio.ChromiumSnapshotStatus.none) {
+          b.innerHTML = mbrio.t.Popup.none()
+        }
+      }
+    }
   }
   goog.dom.appendChild(document.body, b)
 };
 a.recordDownload = function(b) {
-  null != b && (b = b.trim(), 0 < b.length && (mbrio.Settings.latestDownloadedRevision = b, chrome.extension.getBackgroundPage().snapshot.update()))
+  if(b != null) {
+    b = b.trim();
+    if(b.length > 0) {
+      mbrio.Settings.latestDownloadedRevision = b;
+      chrome.extension.getBackgroundPage().snapshot.update()
+    }
+  }
 };
 a.refresh = function() {
-  this.skipLoading = !0;
+  this.skipLoading = true;
   chrome.extension.getBackgroundPage().snapshot.update()
 };
 goog.string.StringBuffer = function(b) {
@@ -801,7 +795,7 @@ mbrio.t = {};
 mbrio.t.Options = {};
 mbrio.t.Options.page = function(b, c) {
   b = c || new soy.StringBuilder;
-  b.append('\t<div class="panel"><h1>Options</h1><div class="form"><div id="platform-panel"><label>Select the platform you would like to monitor:</label><div id="status"></div><fieldset><select id="platform"><option value="Arm">ARM</option><option value="Linux">Linux</option><option value="Linux_x64">Linux 64</option><option value="Linux_ChromeOS">Linux Chrome OS</option><option value="Mac" selected>OS X</option><option value="Win">Windows</option></select></fieldset></div><div id="installer-panel"><label>Would you like to download the installer or zip:</label><fieldset><div><input id="installer-enabled" name="installer" type="radio"> <label for="installer-enabled">Installer</label></div><div><input id="installer-disabled" name="installer" type="radio"> <label for="installer-disabled">Zip</label></div></fieldset></div><div id="repository-panel"><label>Select the repository you would like to monitor:</label><fieldset><select id="repository"><option value="continuous" selected>Continuous (Passed Tests)</option><option value="snapshot">All Snapshots (May Not Have Passed All Tests)</option></select></fieldset></div><div id="check-continuously-panel"><label>Would you like to check for updates at regular intervals:</label><fieldset><div><input id="check-continuously" type="checkbox"> <label for="check-continuously">Check Every</label> <input id="check-interval" class="validate-as-number" type="text" size="4" /> Minutes</div></fieldset></div><div class="buttons"><a id="saveButton" href="#">Save</a></div></div></div><div id="footer"><div id="copyright">Brought to you by: HeavensRevenge &lt;ultimate.evil gmail.com&gt;</div></div>');
+  b.append('\t<div class="panel"><h1>Options</h1><div class="form"><div id="platform-panel"><label>Select the platform you would like to monitor:</label><div id="status"></div><fieldset><select id="platform"><option value="Android">Android</option><option value="Linux">Linux</option><option value="Linux_x64">Linux 64</option><option value="Mac" selected> Mac OS X</option><option value="Win">Windows</option></select></fieldset></div><div id="installer-panel"><label>Would you like to download the installer or zip:</label><fieldset><div><input id="installer-enabled" name="installer" type="radio"> <label for="installer-enabled">Installer</label></div><div><input id="installer-disabled" name="installer" type="radio"> <label for="installer-disabled">Zip</label></div></fieldset></div><div id="repository-panel"><label>Select the repository you would like to monitor:</label><fieldset><select id="repository"><option value="continuous" selected>Continuous (Passed Tests)</option><option value="snapshot">All Snapshots (May Not Have Passed All Tests)</option></select></fieldset></div><div id="check-continuously-panel"><label>Would you like to check for updates at regular intervals:</label><fieldset><div><input id="check-continuously" type="checkbox"> <label for="check-continuously">Check Every</label> <input id="check-interval" class="validate-as-number" type="text" size="4" /> Minutes</div></fieldset></div><div class="buttons"><a id="saveButton" href="#">Save</a></div></div></div><div id="footer"><div id="copyright">Brought to you by: HeavensRevenge &lt;ultimate.evil gmail.com&gt;</div></div>');
   if(!c) {
     return b.toString()
   }
