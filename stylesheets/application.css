@@ -35,9 +35,10 @@ html.popup-page, html.popup-page body {
 
 html.popup-page div.panel {
   float: left;
+  max-width: 35em;
   font-size: 0.88em;
   background: -webkit-gradient(linear, center top, center bottom, from(#FFF), to(#d4d5cf));
-  color: #666;
+  color: #505050;
   border: solid;
   word-wrap: break-word;
 }
