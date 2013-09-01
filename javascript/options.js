@@ -13,7 +13,7 @@
 
 (function(){
 	goog.events.listen(window, 'load', (function() {
-		optionsPage = new mbrio.OptionsPage();
+		optionsPage = new updater.OptionsPage();
 		document.getElementById("platform").addEventListener("change", (function() {
 			optionsPage.platformUpdated();
 		}));
