@@ -371,13 +371,8 @@ a.checkVersion = function(b) {
           iconUrl: "images/icon-256.png",
           buttons: [ {title:"Download", iconUrl:"images/icon-uptodate.png"} ],
           priority: 2
-       }
+      }
       chrome.notifications.create(String(b), notificationOptions, function(){});
-      chrome.notifications.onButtonClicked.addListener(function() {
-      	  snapshotPopup = new updater.SnapshotPopup();
-      	  open(snapshot.downloadLink);
-          snapshotPopup.recordDownload(snapshot.changeLogRevision);
-	  });
     }else {
       chrome.browserAction.setBadgeText({text:""});
       c.icon_.displayUpToDate = true
