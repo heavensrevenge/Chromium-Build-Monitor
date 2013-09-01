@@ -285,55 +285,55 @@ a.addEventListener = function(b, c, e, f) {
 a.dispatchEvent = function(b) {
   return goog.events.dispatchEvent(this, b)
 };
-var mbrio = {ChromiumSnapshotStatus:{}}, BADGE_COLOR_ = {color:[255, 202, 28, 255]};
-mbrio.ChromiumSnapshotStatus.none = "none";
-mbrio.ChromiumSnapshotStatus.loading = "loading";
-mbrio.ChromiumSnapshotStatus.loaded = "loaded";
-mbrio.ChromiumSnapshotStatus.error = "error";
-mbrio.ChromiumSnapshot = function() {
+var updater = {ChromiumSnapshotStatus:{}}, BADGE_COLOR_ = {color:[255, 202, 28, 255]};
+updater.ChromiumSnapshotStatus.none = "none";
+updater.ChromiumSnapshotStatus.loading = "loading";
+updater.ChromiumSnapshotStatus.loaded = "loaded";
+updater.ChromiumSnapshotStatus.error = "error";
+updater.ChromiumSnapshot = function() {
   goog.events.EventTarget.call(a);
-  this.revisionModel_ = new mbrio.RevisionModel;
+  this.revisionModel_ = new updater.RevisionModel;
   this.updateInterval_ = this.icon_ = this.loadingAnimation_ = null;
   var b = this;
   goog.events.listen(window, "unload", function() {
     b.stopUpdateInterval()
   });
   a.currentRequest_ = null;
-  a.status = mbrio.ChromiumSnapshotStatus.none;
+  a.status = updater.ChromiumSnapshotStatus.none;
   b.initIcon();
   b.init()
 };
-goog.inherits(mbrio.ChromiumSnapshot, goog.events.EventTarget);
-mbrio.ChromiumSnapshot.STATUS_UPDATED = "statusupdated";
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("status", function() {
+goog.inherits(updater.ChromiumSnapshot, goog.events.EventTarget);
+updater.ChromiumSnapshot.STATUS_UPDATED = "statusupdated";
+updater.ChromiumSnapshot.prototype.__defineGetter__("status", function() {
   return this.status_
 });
-mbrio.ChromiumSnapshot.prototype.__defineSetter__("status", function(b) {
+updater.ChromiumSnapshot.prototype.__defineSetter__("status", function(b) {
   this.status_ = b;
-  this.dispatchEvent(mbrio.ChromiumSnapshot.STATUS_UPDATED)
+  this.dispatchEvent(updater.ChromiumSnapshot.STATUS_UPDATED)
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("icon", function() {
+updater.ChromiumSnapshot.prototype.__defineGetter__("icon", function() {
   return this.icon_
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("platform", function() {
-  return mbrio.Settings.platform
+updater.ChromiumSnapshot.prototype.__defineGetter__("platform", function() {
+  return updater.Settings.platform
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("downloadLink", function() {
-  return mbrio.Settings.currentRepository.getDownloadUrl(this.platform, this.revisionModel_.version)
+updater.ChromiumSnapshot.prototype.__defineGetter__("downloadLink", function() {
+  return updater.Settings.currentRepository.getDownloadUrl(this.platform, this.revisionModel_.version)
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("changeLogMessage", function() {
+updater.ChromiumSnapshot.prototype.__defineGetter__("changeLogMessage", function() {
   return this.queryChangeLog("/changelogs/log/child::logentry[position()=last()]/child::msg/text()", "")
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("changeLogRevision", function() {
+updater.ChromiumSnapshot.prototype.__defineGetter__("changeLogRevision", function() {
   return this.queryChangeLog("/changelogs/log/child::logentry[position()=last()]/attribute::revision", "-1")
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("version", function() {
+updater.ChromiumSnapshot.prototype.__defineGetter__("version", function() {
   return this.revisionModel_.version
 });
-mbrio.ChromiumSnapshot.prototype.__defineGetter__("changeLog", function() {
+updater.ChromiumSnapshot.prototype.__defineGetter__("changeLog", function() {
   return this.revisionModel_.changeLog
 });
-a = mbrio.ChromiumSnapshot.prototype;
+a = updater.ChromiumSnapshot.prototype;
 a.queryChangeLog = function(b, c) {
   var d = new XPathEvaluator;
   b = d.evaluate(b, this.revisionModel_.changeLog, null, XPathResult.STRING_TYPE, null);
@@ -344,8 +344,8 @@ a.queryChangeLog = function(b, c) {
   return c
 };
 a.initIcon = function() {
-  this.icon_ = new mbrio.Icon;
-  this.loadingAnimation_ = new mbrio.LoadingAnimation(this)
+  this.icon_ = new updater.Icon;
+  this.loadingAnimation_ = new updater.LoadingAnimation(this)
 };
 a.reset = function() {
   chrome.browserAction.setBadgeText({text:""});
@@ -358,11 +358,26 @@ a.init = function() {
 a.checkVersion = function(b) {
   if(!isNaN(b)) {
     var c = this;
+    var d = updater.Settings.latestDownloadedRevision;
     c.revisionModel_.version = b;
-    if(c.revisionModel_.version > mbrio.Settings.latestDownloadedRevision) {
+    if(c.revisionModel_.version > d) {
       chrome.browserAction.setBadgeBackgroundColor(BADGE_COLOR_);
       chrome.browserAction.setBadgeText({text:"new"});
-      c.icon_.displayUpToDate = false
+      c.icon_.displayUpToDate = false;
+      var notificationOptions = {
+          type: "basic",
+          title: "New Chromium Build Available",
+          message: "Revision " + d + " was last Downloaded\nRevision " + b + " is Available",
+          iconUrl: "images/icon-256.png",
+          buttons: [ {title:"Download", iconUrl:"images/icon-uptodate.png"} ],
+          priority: 2
+       }
+      chrome.notifications.create(String(b), notificationOptions, function(){});
+      chrome.notifications.onButtonClicked.addListener(function() {
+      	  snapshotPopup = new updater.SnapshotPopup();
+      	  open(snapshot.downloadLink);
+          snapshotPopup.recordDownload(snapshot.changeLogRevision);
+	  });
     }else {
       chrome.browserAction.setBadgeText({text:""});
       c.icon_.displayUpToDate = true
@@ -372,10 +387,10 @@ a.checkVersion = function(b) {
 a.startUpdateInterval = function() {
   var b = this;
   b.stopUpdateInterval();
-  if(mbrio.Settings.canCheckContinuously) {
+  if(updater.Settings.canCheckContinuously) {
     b.updateInterval_ = setTimeout(function() {
       b.update()
-    }, parseInt(mbrio.Settings.checkInterval) * 6E4, 10)
+    }, parseInt(updater.Settings.checkInterval) * 6E4, 10)
   }
 };
 a.stopUpdateInterval = function() {
@@ -387,15 +402,15 @@ a.stopUpdateInterval = function() {
 a.update = function() {
   var b = this;
   b.startUpdateInterval();
-  b.status = mbrio.ChromiumSnapshotStatus.loading;
+  b.status = updater.ChromiumSnapshotStatus.loading;
   b.icon_.displayError = false;
   b.loadingAnimation_.start();
-  b.request(mbrio.Settings.currentRepository.getLatestUrl(b.platform), function(c) {
+  b.request(updater.Settings.currentRepository.getLatestUrl(b.platform), function(c) {
     if(c.readyState == 4) {
       if(c.status != 200) {
         b.icon_.displayError = true;
         b.loadingAnimation_.registerStop();
-        b.status = mbrio.ChromiumSnapshotStatus.error
+        b.status = updater.ChromiumSnapshotStatus.error
       }else {
         b.checkVersion(parseInt(c.responseText));
         b.retrieveChangeLog()
@@ -405,14 +420,14 @@ a.update = function() {
 };
 a.retrieveChangeLog = function() {
   var b = this;
-  b.request(mbrio.Settings.currentRepository.getChangeLogUrl(b.platform, b.revisionModel_.version), function(c) {
+  b.request(updater.Settings.currentRepository.getChangeLogUrl(b.platform, b.revisionModel_.version), function(c) {
     if(c.readyState == 4) {
       if(c.status != 200) {
         b.icon_.displayError = true;
-        b.status = mbrio.ChromiumSnapshotStatus.error
+        b.status = updater.ChromiumSnapshotStatus.error
       }else {
         b.revisionModel_.changeLog = c.responseXML;
-        b.status = mbrio.ChromiumSnapshotStatus.loaded
+        b.status = updater.ChromiumSnapshotStatus.loaded
       }
       b.loadingAnimation_.registerStop()
     }
@@ -468,7 +483,7 @@ goog.dom.removeChildren = function(b) {
     b.removeChild(c)
   }
 };
-mbrio.Icon = function() {
+updater.Icon = function() {
   this.iconNormalImage_ = goog.dom.$("icon");
   this.iconUpToDateImage_ = goog.dom.$("icon-uptodate");
   this.iconErrorImage_ = goog.dom.$("icon-error");
@@ -478,33 +493,33 @@ mbrio.Icon = function() {
   this.displayUpToDate_ = this.displayError_ = !1;
   this.rotation = 0
 };
-mbrio.Icon.prototype.__defineGetter__("rotation", function() {
+updater.Icon.prototype.__defineGetter__("rotation", function() {
   return this.rotation_
 });
-mbrio.Icon.prototype.__defineSetter__("rotation", function(b) {
+updater.Icon.prototype.__defineSetter__("rotation", function(b) {
   this.rotation_ = b;
   this.draw()
 });
-mbrio.Icon.prototype.__defineGetter__("displayError", function() {
+updater.Icon.prototype.__defineGetter__("displayError", function() {
   return this.displayError_
 });
-mbrio.Icon.prototype.__defineSetter__("displayError", function(b) {
+updater.Icon.prototype.__defineSetter__("displayError", function(b) {
   this.displayError_ = b;
   this.updateIcon();
   this.draw()
 });
-mbrio.Icon.prototype.__defineGetter__("displayUpToDate", function() {
+updater.Icon.prototype.__defineGetter__("displayUpToDate", function() {
   return this.displayUpToDate_
 });
-mbrio.Icon.prototype.__defineSetter__("displayUpToDate", function(b) {
+updater.Icon.prototype.__defineSetter__("displayUpToDate", function(b) {
   this.displayUpToDate_ = b;
   this.updateIcon();
   this.draw()
 });
-mbrio.Icon.prototype.updateIcon = function() {
+updater.Icon.prototype.updateIcon = function() {
   this.iconImage_ = this.displayError_ ? this.iconErrorImage_ : this.displayUpToDate_ ? this.iconUpToDateImage_ : this.iconNormalImage_
 };
-mbrio.Icon.prototype.draw = function() {
+updater.Icon.prototype.draw = function() {
   var b = this;
   b.canvasContext_.save();
   b.canvasContext_.clearRect(0, 0, 19, 19);
@@ -514,7 +529,7 @@ mbrio.Icon.prototype.draw = function() {
   b.canvasContext_.restore();
   chrome.browserAction.setIcon({imageData:this.canvasContext_.getImageData(0, 0, 19, 19)})
 };
-mbrio.LoadingAnimation = function(b) {
+updater.LoadingAnimation = function(b) {
   var c = this;
   c.interval_ = null;
   c.fullRotation_ = 360;
@@ -524,7 +539,7 @@ mbrio.LoadingAnimation = function(b) {
   c.currentRotation_ = 1;
   c.stoppingRotation_ = null
 };
-mbrio.LoadingAnimation.prototype.start = function() {
+updater.LoadingAnimation.prototype.start = function() {
   var b = this;
   b.stop();
   b.prev_ = (new Date).getTime();
@@ -542,10 +557,10 @@ mbrio.LoadingAnimation.prototype.start = function() {
     }
   }, 1E3 / b.fps_)
 };
-mbrio.LoadingAnimation.prototype.registerStop = function() {
+updater.LoadingAnimation.prototype.registerStop = function() {
   this.stoppingRotation_ = this.currentRotation_
 };
-mbrio.LoadingAnimation.prototype.stop = function() {
+updater.LoadingAnimation.prototype.stop = function() {
   if(this.interval_ != null) {
     clearInterval(this.interval_);
     this.interval_ = null;
@@ -554,20 +569,20 @@ mbrio.LoadingAnimation.prototype.stop = function() {
     this.stoppingRotation_ = null
   }
 };
-mbrio.OptionsPage = function() {
+updater.OptionsPage = function() {
   this.init()
 };
-mbrio.OptionsPage.prototype.init = function() {
+updater.OptionsPage.prototype.init = function() {
   this.display();
   this.restoreOptions()
 };
-mbrio.OptionsPage.prototype.display = function() {
+updater.OptionsPage.prototype.display = function() {
   goog.dom.removeChildren(document.body);
   var b = goog.dom.$dom("div");
-  b.innerHTML = mbrio.t.Options.page();
+  b.innerHTML = updater.t.Options.page();
   goog.dom.appendChild(document.body, b)
 };
-mbrio.OptionsPage.prototype.platformUpdated = function() {
+updater.OptionsPage.prototype.platformUpdated = function() {
   var b = goog.dom.$("platform");
   b = b.children[b.selectedIndex].value;
   if(b != "Win") {
@@ -576,16 +591,16 @@ mbrio.OptionsPage.prototype.platformUpdated = function() {
     goog.dom.$("installer-panel").style.display = "block"
   }
 };
-mbrio.OptionsPage.prototype.saveOptions = function() {
+updater.OptionsPage.prototype.saveOptions = function() {
   var b = goog.dom.$("platform");
   b = b.children[b.selectedIndex].value;
-  mbrio.Settings.platform = b;
+  updater.Settings.platform = b;
   b = goog.dom.$("repository");
   b = b.children[b.selectedIndex].value;
-  mbrio.Settings.snapshotRepository = b;
-  mbrio.Settings.useInstaller = goog.dom.$("installer-enabled").checked;
-  mbrio.Settings.checkContinuously = goog.dom.$("check-continuously").checked;
-  mbrio.Settings.checkInterval = parseInt(goog.dom.$("check-interval").value);
+  updater.Settings.snapshotRepository = b;
+  updater.Settings.useInstaller = goog.dom.$("installer-enabled").checked;
+  updater.Settings.checkContinuously = goog.dom.$("check-continuously").checked;
+  updater.Settings.checkInterval = parseInt(goog.dom.$("check-interval").value);
   chrome.extension.getBackgroundPage().snapshot.update();
   var c = goog.dom.$("status");
   c.innerHTML = "Options Saved.";
@@ -595,19 +610,19 @@ mbrio.OptionsPage.prototype.saveOptions = function() {
     c.style.webkitAnimationDuration = "2s"
   }, 0)
 };
-mbrio.OptionsPage.prototype.restoreOptions = function() {
-  this.selectOption("platform", mbrio.Settings.platform);
-  this.selectOption("repository", mbrio.Settings.snapshotRepository);
-  if(mbrio.Settings.useInstaller == "true") {
+updater.OptionsPage.prototype.restoreOptions = function() {
+  this.selectOption("platform", updater.Settings.platform);
+  this.selectOption("repository", updater.Settings.snapshotRepository);
+  if(updater.Settings.useInstaller == "true") {
     goog.dom.$("installer-enabled").checked = true
   }else {
     goog.dom.$("installer-disabled").checked = true
   }
-  goog.dom.$("check-continuously").checked = mbrio.Settings.checkContinuously == "true";
-  goog.dom.$("check-interval").value = mbrio.Settings.checkInterval;
+  goog.dom.$("check-continuously").checked = updater.Settings.checkContinuously == "true";
+  goog.dom.$("check-interval").value = updater.Settings.checkInterval;
   this.platformUpdated()
 };
-mbrio.OptionsPage.prototype.selectOption = function(b, c) {
+updater.OptionsPage.prototype.selectOption = function(b, c) {
   if(c) {
     b = goog.dom.$(b);
     for(var d = 0;d < b.children.length;d++) {
@@ -619,11 +634,11 @@ mbrio.OptionsPage.prototype.selectOption = function(b, c) {
     }
   }
 };
-mbrio.RevisionModel = function() {
+updater.RevisionModel = function() {
   a.version = -1;
   a.changeLog = ""
 };
-mbrio.Repositories = {};
+updater.Repositories = {};
 var FILE_NAMES_ = [];
 FILE_NAMES_.Android = "chrome-android.zip";
 FILE_NAMES_.Linux = "chrome-linux.zip";
@@ -633,96 +648,96 @@ FILE_NAMES_.Mac = "chrome-mac.zip";
 FILE_NAMES_.Win = "chrome-win32.zip";
 FILE_NAMES_.Win_x64 = "chrome-win32.zip";
 FILE_NAMES_["Win-installer"] = "mini_installer.exe";
-mbrio.Repositories.continuous = {name:"continuous", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", getLatestUrl:function(b) {
+updater.Repositories.continuous = {name:"continuous", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-continuous/", getLatestUrl:function(b) {
   return this.latestBaseUrl + b + "/LAST_CHANGE"
 }, getDownloadUrl:function(b, c) {
   var d = FILE_NAMES_[b];
-  if(b == "Win" && mbrio.Settings.useInstaller == "true") {
+  if(b == "Win" && updater.Settings.useInstaller == "true") {
     d = FILE_NAMES_["Win-installer"]
   }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/" + d
 }, getChangeLogUrl:function(b, c) {
   return this.downloadBaseUrl + b + "/" + c.toString() + "/changelog.xml"
 }};
-mbrio.Repositories.snapshot = {name:"snapshot", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", getLatestUrl:function(b) {
+updater.Repositories.snapshot = {name:"snapshot", latestBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", downloadBaseUrl:"http://commondatastorage.googleapis.com/chromium-browser-snapshots/", getLatestUrl:function(b) {
   return this.latestBaseUrl + b + "/LAST_CHANGE"
 }, getDownloadUrl:function(b, c) {
   var d = FILE_NAMES_[b];
-  if(b == "Win" && mbrio.Settings.useInstaller == "true") {
+  if(b == "Win" && updater.Settings.useInstaller == "true") {
     d = FILE_NAMES_["Win-installer"]
   }
   return this.downloadBaseUrl + b + "/" + c.toString() + "/" + d
 }, getChangeLogUrl:function(b, c) {
   return this.downloadBaseUrl + b + "/" + c.toString() + "/changelog.xml"
 }};
-mbrio.SettingsManager = function() {
+updater.SettingsManager = function() {
 };
-mbrio.SettingsManager.prototype.__defineGetter__("useInstaller", function() {
+updater.SettingsManager.prototype.__defineGetter__("useInstaller", function() {
   var b = !0;
   null != localStorage.useInstaller && (b = localStorage.useInstaller);
   return b
 });
-mbrio.SettingsManager.prototype.__defineSetter__("useInstaller", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("useInstaller", function(b) {
   localStorage.useInstaller = b
 });
-mbrio.SettingsManager.prototype.__defineGetter__("platform", function() {
+updater.SettingsManager.prototype.__defineGetter__("platform", function() {
   return localStorage.platform || this.defaultPlatform
 });
-mbrio.SettingsManager.prototype.__defineGetter__("defaultPlatform", function() {
+updater.SettingsManager.prototype.__defineGetter__("defaultPlatform", function() {
   return goog.userAgent.LINUX ? "Linux" : goog.userAgent.MAC ? "Mac" : "Win"
 });
-mbrio.SettingsManager.prototype.__defineSetter__("platform", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("platform", function(b) {
   localStorage.platform = b;
   this.latestDownloadedRevision = -1
 });
-mbrio.SettingsManager.prototype.__defineGetter__("latestDownloadedRevision", function() {
+updater.SettingsManager.prototype.__defineGetter__("latestDownloadedRevision", function() {
   return localStorage.latestDownloadedRevision || -1
 });
-mbrio.SettingsManager.prototype.__defineSetter__("latestDownloadedRevision", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("latestDownloadedRevision", function(b) {
   localStorage.latestDownloadedRevision = b
 });
-mbrio.SettingsManager.prototype.__defineGetter__("currentRepository", function() {
-  return mbrio.Repositories[this.snapshotRepository]
+updater.SettingsManager.prototype.__defineGetter__("currentRepository", function() {
+  return updater.Repositories[this.snapshotRepository]
 });
-mbrio.SettingsManager.prototype.__defineGetter__("snapshotRepository", function() {
+updater.SettingsManager.prototype.__defineGetter__("snapshotRepository", function() {
   return localStorage.snapshotRepository || "continuous"
 });
-mbrio.SettingsManager.prototype.__defineSetter__("snapshotRepository", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("snapshotRepository", function(b) {
   localStorage.snapshotRepository = b
 });
-mbrio.SettingsManager.prototype.__defineGetter__("checkContinuously", function() {
+updater.SettingsManager.prototype.__defineGetter__("checkContinuously", function() {
   return localStorage.checkContinuously || "false"
 });
-mbrio.SettingsManager.prototype.__defineSetter__("checkContinuously", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("checkContinuously", function(b) {
   localStorage.checkContinuously = b
 });
-mbrio.SettingsManager.prototype.__defineGetter__("checkInterval", function() {
+updater.SettingsManager.prototype.__defineGetter__("checkInterval", function() {
   return localStorage.checkInterval || "60"
 });
-mbrio.SettingsManager.prototype.__defineSetter__("checkInterval", function(b) {
+updater.SettingsManager.prototype.__defineSetter__("checkInterval", function(b) {
   localStorage.checkInterval = b
 });
-mbrio.SettingsManager.prototype.__defineGetter__("canCheckContinuously", function() {
+updater.SettingsManager.prototype.__defineGetter__("canCheckContinuously", function() {
   return this.checkContinuously == "true" && parseInt(this.checkInterval, 10) > 0
 });
-mbrio.Settings = new mbrio.SettingsManager;
-mbrio.SnapshotPopup = function() {
+updater.Settings = new updater.SettingsManager;
+updater.SnapshotPopup = function() {
   this.skipLoading = false;
   this.init()
 };
-a = mbrio.SnapshotPopup.prototype;
+a = updater.SnapshotPopup.prototype;
 a.init = function() {
   var b = this, c = chrome.extension.getBackgroundPage().snapshot;
   function d() {
-    if(b.skipLoading && c.status == mbrio.ChromiumSnapshotStatus.loading) {
+    if(b.skipLoading && c.status == updater.ChromiumSnapshotStatus.loading) {
       b.skipLoading = false
     }else {
       b.display()
     }
   }
-  c.addEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, d);
+  c.addEventListener(updater.ChromiumSnapshot.STATUS_UPDATED, d);
   goog.events.listen(window, "unload", function() {
-    c.removeEventListener(mbrio.ChromiumSnapshot.STATUS_UPDATED, d)
+    c.removeEventListener(updater.ChromiumSnapshot.STATUS_UPDATED, d)
   });
   b.retrieveChangeLog()
 };
@@ -732,7 +747,7 @@ a.retrieveChangeLog = function() {
 a.display = function() {
   goog.dom.removeChildren(document.body);
   var b = goog.dom.$dom("div"), c = chrome.extension.getBackgroundPage().snapshot.status;
-  if(c == mbrio.ChromiumSnapshotStatus.loaded) {
+  if(c == updater.ChromiumSnapshotStatus.loaded) {
     var d = chrome.extension.getBackgroundPage();
     c = d.snapshot.changeLogMessage;
     if(c != null && c.length > 0) {
@@ -741,16 +756,16 @@ a.display = function() {
     c = c.replace(/\.\n\n/g, ".<br /><br />");
     var e = d.snapshot.changeLogRevision, f = d.snapshot.downloadLink;
     d = d.snapshot.platform;
-    b.innerHTML = mbrio.t.Popup.loaded({href:f, revision:e, msg:c, platform:d, prevRevision:mbrio.Settings.latestDownloadedRevision})
+    b.innerHTML = updater.t.Popup.loaded({href:f, revision:e, msg:c, platform:d, prevRevision:updater.Settings.latestDownloadedRevision})
   }else {
-    if(c == mbrio.ChromiumSnapshotStatus.loading) {
-      b.innerHTML = mbrio.t.Popup.loading()
+    if(c == updater.ChromiumSnapshotStatus.loading) {
+      b.innerHTML = updater.t.Popup.loading()
     }else {
-      if(c == mbrio.ChromiumSnapshotStatus.error) {
-        b.innerHTML = mbrio.t.Popup.error()
+      if(c == updater.ChromiumSnapshotStatus.error) {
+        b.innerHTML = updater.t.Popup.error()
       }else {
-        if(c == mbrio.ChromiumSnapshotStatus.none) {
-          b.innerHTML = mbrio.t.Popup.none()
+        if(c == updater.ChromiumSnapshotStatus.none) {
+          b.innerHTML = updater.t.Popup.none()
         }
       }
     }
@@ -761,7 +776,7 @@ a.recordDownload = function(b) {
   if(b != null) {
     b = b.trim();
     if(b.length > 0) {
-      mbrio.Settings.latestDownloadedRevision = b;
+      updater.Settings.latestDownloadedRevision = b;
       chrome.extension.getBackgroundPage().snapshot.update()
     }
   }
@@ -791,94 +806,94 @@ soy.StringBuilder = goog.string.StringBuffer;
 soy.$$escapeHtml = function(b) {
   return goog.string.htmlEscape(String(b))
 };
-mbrio.t = {};
-mbrio.t.Options = {};
-mbrio.t.Options.page = function(b, c) {
+updater.t = {};
+updater.t.Options = {};
+updater.t.Options.page = function(b, c) {
   b = c || new soy.StringBuilder;
   b.append('\t<div class="panel"><h1>Options</h1><div class="form"><div id="platform-panel"><label>Select the platform you would like to monitor:</label><div id="status"></div><fieldset><select id="platform"><option value="Android">Android</option><option value="Linux">Linux</option><option value="Linux_x64">Linux 64</option><option value="Mac" selected> Mac OS X</option><option value="Win">Windows</option></select></fieldset></div><div id="installer-panel"><label>Would you like to download the installer or zip:</label><fieldset><div><input id="installer-enabled" name="installer" type="radio"> <label for="installer-enabled">Installer</label></div><div><input id="installer-disabled" name="installer" type="radio"> <label for="installer-disabled">Zip</label></div></fieldset></div><div id="repository-panel"><label>Select the repository you would like to monitor:</label><fieldset><select id="repository"><option value="continuous" selected>Continuous (Passed Tests)</option><option value="snapshot">All Snapshots (May Not Have Passed All Tests)</option></select></fieldset></div><div id="check-continuously-panel"><label>Would you like to check for updates at regular intervals:</label><fieldset><div><input id="check-continuously" type="checkbox"> <label for="check-continuously">Check Every</label> <input id="check-interval" class="validate-as-number" type="text" size="4" /> Minutes</div></fieldset></div><div class="buttons"><a id="saveButton" href="#">Save</a></div></div></div><div id="footer"><div id="copyright">Brought to you by: HeavensRevenge &lt;ultimate.evil gmail.com&gt;</div></div>');
   if(!c) {
     return b.toString()
   }
 };
-mbrio.t.Popup = {};
-mbrio.t.Popup.loading = function(b, c) {
+updater.t.Popup = {};
+updater.t.Popup.loading = function(b, c) {
   b = c || new soy.StringBuilder;
   b.append('\t<div class="panel"><h1>Loading...</h1><div class="content"><p class="msg">Attempting to contact the servers.</p></div><div class="buttons">');
-  mbrio.t.Popup.refreshButton(null, b);
+  updater.t.Popup.refreshButton(null, b);
   b.append("</div></div>");
   if(!c) {
     return b.toString()
   }
 };
-mbrio.t.Popup.error = function(b, c) {
+updater.t.Popup.error = function(b, c) {
   b = c || new soy.StringBuilder;
   b.append('\t<div class="panel"><h1>Error</h1><div class="content"><p class="message">An error has occured.</p></div><div class="buttons">');
-  mbrio.t.Popup.refreshButton(null, b);
+  updater.t.Popup.refreshButton(null, b);
   b.append("</div></div>");
   if(!c) {
     return b.toString()
   }
 };
-mbrio.t.Popup.none = function(b, c) {
+updater.t.Popup.none = function(b, c) {
   b = c || new soy.StringBuilder;
   b.append('\t<div class="panel"><h1>Needs Initialization</h1><div class="content"><p class="msg">Please hit the refresh button.</p></div><div class="buttons">');
-  mbrio.t.Popup.refreshButton(null, b);
+  updater.t.Popup.refreshButton(null, b);
   b.append("</div></div>");
   if(!c) {
     return b.toString()
   }
 };
-mbrio.t.Popup.loaded = function(b, c) {
+updater.t.Popup.loaded = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append('\t<div class="panel"><h1>Latest Chromium Snapshot Information</h1><div class="content">');
-  mbrio.t.Popup.platformInfo({platform:b.platform}, e);
-  mbrio.t.Popup.prevRevision({prevRevision:b.prevRevision}, e);
-  mbrio.t.Popup.revisionInfo({revision:b.revision}, e);
-  mbrio.t.Popup.changeLogInfo({msg:b.msg}, e);
+  updater.t.Popup.platformInfo({platform:b.platform}, e);
+  updater.t.Popup.prevRevision({prevRevision:b.prevRevision}, e);
+  updater.t.Popup.revisionInfo({revision:b.revision}, e);
+  updater.t.Popup.changeLogInfo({msg:b.msg}, e);
   e.append('</div><div class="buttons">');
-  mbrio.t.Popup.downloadButton({href:b.href, revision:b.revision}, e);
-  mbrio.t.Popup.refreshButton(null, e);
+  updater.t.Popup.downloadButton({href:b.href, revision:b.revision}, e);
+  updater.t.Popup.refreshButton(null, e);
   e.append("</div></div>");
   if(!c) {
     return e.toString()
   }
 };
-mbrio.t.Popup.platformInfo = function(b, c) {
+updater.t.Popup.platformInfo = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append('\t<div class="section inline"><h2>Platform</h2><div class="platform">', soy.$$escapeHtml(b.platform), "</div></div>");
   if(!c) {
     return e.toString()
   }
 };
-mbrio.t.Popup.revisionInfo = function(b, c) {
+updater.t.Popup.revisionInfo = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append('\t<div class="section inline"><h2>Latest Revision</h2><div class="revision">', soy.$$escapeHtml(b.revision), "</div></div>");
   if(!c) {
     return e.toString()
   }
 };
-mbrio.t.Popup.changeLogInfo = function(b, c) {
+updater.t.Popup.changeLogInfo = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append('\t<div class="section"><h2>Most Recent Changelog</h2><div class="changeLog">', b.msg, "</div></div>");
   if(!c) {
     return e.toString()
   }
 };
-mbrio.t.Popup.downloadButton = function(b, c) {
+updater.t.Popup.downloadButton = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append('\t<div class="link"><a href="', soy.$$escapeHtml(b.href), '" id="download" target="_blank">Download</a></div>');
   if(!c) {
     return e.toString()
   }
 };
-mbrio.t.Popup.refreshButton = function(b, c) {
+updater.t.Popup.refreshButton = function(b, c) {
   b = c || new soy.StringBuilder;
   b.append('\t<div class="link"><a id="refresh" target="_blank">Refresh</a></div>');
   if(!c) {
     return b.toString()
   }
 };
-mbrio.t.Popup.prevRevision = function(b, c) {
+updater.t.Popup.prevRevision = function(b, c) {
   var e = c || new soy.StringBuilder;
   e.append("\t", null != b.prevRevision && 0 < b.prevRevision.length && -1 != b.prevRevision ? '<div class="section inline"><h2>Previously Downloaded Revision</h2><div class="revision">' + soy.$$escapeHtml(b.prevRevision) + "</div></div>" : "");
   if(!c) {
