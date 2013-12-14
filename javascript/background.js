@@ -11,13 +11,11 @@
 //     and/or other materials provided with the distribution.
 //
 
-(function(){
-    goog.events.listen(window, 'load', (function() {
-        snapshot = new updater.ChromiumSnapshot();
-    }));
-    chrome.notifications.onButtonClicked.addListener(function() {
-        snapshotPopup = new updater.SnapshotPopup();
-        open(snapshot.downloadLink);
-        snapshotPopup.recordDownload(snapshot.changeLogRevision);
-    });
-})();
+goog.events.listen(window, 'load', (function() {
+	snapshot = new updater.ChromiumSnapshot();
+}));
+chrome.notifications.onButtonClicked.addListener(function() {
+	snapshotPopup = new updater.SnapshotPopup();
+	open(snapshot.downloadLink);
+	snapshotPopup.recordDownload(snapshot.changeLogRevision);
+});

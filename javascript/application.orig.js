@@ -370,7 +370,7 @@ a.checkVersion = function(b) {
           message: "Revision " + d + " was last Downloaded\nRevision " + b + " is Available",
           iconUrl: "images/icon-256.png",
           buttons: [ {title:"Download", iconUrl:"images/icon-uptodate.png"} ],
-          priority: 2
+          priority: 0
       }
       chrome.notifications.create(String(b), notificationOptions, function(){});
     }else {
